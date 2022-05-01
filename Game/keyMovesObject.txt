@@ -1,0 +1,26 @@
+let Move = new Object();
+        
+        Move = {
+            'Left': 
+            function() {
+                this.snakeImg.style.transform = 'scaleX(-1)';
+                var goleft = parseFloat(this.snake.style.left) - this.step;
+                parseFloat(this.snake.style.left)- this.step >= -5 ? this.snake.style.left = goleft + 'px' : 0;
+            },
+            'Right':
+            function() {
+                Game.snakeImg.style.transform = 'scaleX(1)';
+                var goright = parseFloat(Game.snake.style.left) + Game.step;
+                parseFloat(Game.snake.style.left) + this.step < Game.gameWidth-5 ? Game.snake.style.left = goright + 'px': 0
+            },
+            'Up':
+            function() {
+                var gotop = parseFloat(this.snake.style.top) - this.step;
+                parseFloat(this.snake.style.top) - this.step >= -5 ? this.snake.style.top = gotop + 'px' : 0;
+            },
+            'Down':
+            function() {
+                var gobot = parseFloat(this.snake.style.top) + this.step; 
+                parseFloat(this.snake.style.top) + this.step < this.gameWidth-5 ? this.snake.style.top = gobot + 'px' : 0;
+            }
+        }

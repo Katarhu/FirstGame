@@ -1,0 +1,234 @@
+const button = document.querySelector('.button');
+const addImpostor = document.querySelector('.addimpostor');
+const input = document.querySelector('.input');
+
+const container = document.querySelector('.container');
+const gameRows = input.value;
+
+const score = document.querySelector('.score');
+let scorevalue = 0;
+
+const allObjects = document.querySelectorAll('.gameobject'); //All creatures on map to acquire new width + height
+
+const snake = document.querySelector('.snake');
+const gameBoxes = document.querySelectorAll('.rc').length;
+const gameWidth = document.querySelector('.container').clientWidth;
+
+
+button.addEventListener('click', clearCreateMap);
+addImpostor.addEventListener('click', createImpostor);
+
+//Snake move: step = containerWidth / amount of rows || columns (map is square);
+let step = gameWidth / gameRows;
+
+let goright = 0.0;
+let goleft = 0.0;
+let gotop = 0.0;
+let gobot = 0.0;
+
+//All possible coordinates to spawn 0 to maximalWidth - step
+
+let x = [0];
+
+for(var i = 1; i < gameRows; i++){
+    x[i] = gameWidth/gameRows + step * (i-1);
+}
+
+//Create Map and 3 impostors muhahahaha ^_^ 
+
+createMap(gameRows);
+
+createImpostor();
+createImpostor();
+createImpostor();
+createHole();
+
+var spawnTime = 7500;
+var HolesCount = 0;
+var Holes = setInterval(() => {
+    createHole();
+    HolesCount++;
+    if(HolesCount === 4) { clearInterval(Holes); }
+}, spawnTime);
+
+
+
+
+// 1 impostor eaten +1 to score :3, if coordinates of snake is same of one of impostors it gets deleted
+
+addEventListener('keydown', keyPress);
+function keyPress(e){
+    if(e.key === 'ArrowDown') {
+        moveDown();
+    } else if(e.key === 'ArrowUp') {
+        moveUp();
+    } else if(e.key === 'ArrowRight'){
+        moveRight();
+    } else if(e.key === 'ArrowLeft') {
+        moveLeft();
+    }
+    const impostor = document.querySelectorAll('.notsnake');
+    const hole = document.querySelectorAll('.hole');
+
+    for(var i = 0; i < impostor.length; i++){
+        if(snake.style.left === impostor[i].style.left && snake.style.top === impostor[i].style.top){
+            const impostor = document.querySelectorAll('.notsnake');
+            impostor[i].parentNode.removeChild(impostor[i]);
+            createImpostor(parseFloat(snake.style.left), parseFloat(snake.style.top));
+            scorevalue++;
+            score.innerHTML = `${scorevalue}`;
+        }
+    }
+    for(var i = 0; i < hole.length; i++){
+        if(snake.style.left === hole[i].style.left && snake.style.top === hole[i].style.top){
+            scorevalue = 0;
+            score.innerHTML = `${scorevalue}`;
+        }
+    }
+}
+
+//Receive rows from input on page, creating Rows * Rows square, then присвоює grid property from createGrid()
+
+function createMap(Rows, grid){
+
+    snake.style.width = step + 'px';
+    snake.style.height = step + 'px';
+
+    for(var i = 0; i < Rows*Rows; i++){
+        var newBlock = document.createElement("div");
+        newBlock.classList.add('rc');
+        container.appendChild(newBlock);
+    }
+    grid = createGrid(Rows);
+    container.style.grid = grid;
+
+    step = gameWidth / Rows;
+}
+
+//Clear all existing rectangles, creating grid text, and sending new Rows and grid text to createMap()
+
+function clearCreateMap(){
+    var Rows = input.value;
+    var rectangles = document.querySelectorAll('.rc');
+    for(var i = 0; i < rectangles.length; i++){
+        rectangles[i].parentNode.removeChild(rectangles[i]);
+    }
+    grid = createGrid(Rows);
+    createMap(Rows, grid);
+}
+
+//Create text for grid property
+
+function createGrid(Rows){
+    var grid = '';
+    for(let i = 0; i <= Rows * 2; i++){
+        if(i == Rows){
+            grid += '/';
+        } else {
+            grid += '1fr' + ' ';
+        }
+    }
+    return grid;
+}
+
+//Listener to arrowKeys 
+
+function moveLeft(){
+    goleft = parseFloat(snake.style.left) - step;
+    if(parseFloat(snake.style.left)- step >= 0){
+        snake.style.left = goleft + 'px';
+    } else {
+        snake.style.left = gameWidth - step + 'px';
+    }
+}
+function moveRight(){
+    goright = parseFloat(snake.style.left) + step;   
+    if(parseFloat(snake.style.left) + step < gameWidth){
+        snake.style.left = goright + 'px';
+    } else {
+         snake.style.left = 0 + 'px';
+    }
+}
+function moveUp(){
+    gotop = parseFloat(snake.style.top) - step;
+    if(parseFloat(snake.style.top) - step >= 0){
+        snake.style.top = gotop + 'px';
+    } else {
+        snake.style.top = gameWidth - step + 'px';
+    }
+}
+function moveDown(){
+    gobot = parseFloat(snake.style.top) + step; 
+    if(parseFloat(snake.style.top) + step < gameWidth){
+        snake.style.top = gobot + 'px';
+    } else {
+         snake.style.top = 0 + 'px';
+    }
+}
+
+
+//Creating element of impostor with photo inside. Then recieve coordinates of all creatures on map
+//If any of coordinates of new impostor is same to any creature, loop continues to randomize coordinates from x[] above
+
+function createImpostor(){
+    var newImpostor = document.createElement("div");
+    var newImg = document.createElement("img");
+    
+    newImg.classList.add('snake-img');
+    newImg.src = './img/impostor.png';
+    
+    newImpostor.classList.add('notsnake','gameobject','impostor');
+    newImpostor.appendChild(newImg);
+
+    var allObjects = document.querySelectorAll('.gameobject');
+    var allObjectsPossitions = [];
+
+    for(var i = 0; i < allObjects.length; i++){
+        allObjectsPossitions[i] = [parseInt(allObjects[i].style.left), parseInt(allObjects[i].style.top)];
+    }
+ 
+    do{
+        newImpostor.style.left = `${x[parseInt(Math.random()*10 % gameRows)]}px`;
+        newImpostor.style.top = `${x[parseInt(Math.random()*10 % gameRows)]}px`;
+    
+        newImpostor.style.width = step + 'px';
+        newImpostor.style.height = step + 'px';
+
+        var newImpostorArray = [parseInt(newImpostor.style.left), parseInt(newImpostor.style.top)];
+
+    } while(allObjectsPossitions.some((item) => item[0] === newImpostorArray[0] && item[1] === newImpostorArray[1]));
+
+    
+    container.appendChild(newImpostor);
+}
+function createHole(){
+    var newHole = document.createElement("div");
+    var newImg = document.createElement("img");
+    
+    newImg.classList.add('snake-img');
+    newImg.src = './img/hole.png';
+    
+    newHole.classList.add('hole','gameobject');
+    newHole.appendChild(newImg);
+
+    var allObjects = document.querySelectorAll('.gameobject');
+    var allObjectsPossitions = [];
+
+    for(var i = 0; i < allObjects.length; i++){
+        allObjectsPossitions[i] = [parseInt(allObjects[i].style.left), parseInt(allObjects[i].style.top)];
+    }
+ 
+    do{
+        newHole.style.left = `${x[parseInt(Math.random()*10 % gameRows)]}px`;
+        newHole.style.top = `${x[parseInt(Math.random()*10 % gameRows)]}px`;
+    
+        newHole.style.width = step + 'px';
+        newHole.style.height = step + 'px';
+
+        var newHoleArray = [parseInt(newHole.style.left), parseInt(newHole.style.top)];
+
+    } while(allObjectsPossitions.some((item) => item[0] === newHoleArray[0] && item[1] === newHoleArray[1]));
+
+    
+    container.appendChild(newHole);
+}

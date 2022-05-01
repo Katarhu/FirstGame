@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./img/icon.webp">
+
+    <link rel="stylesheet" href="./css/styles.css">
+
+    <title>Killer John</title>
+</head>
+<body>
+    <div class="hidecontent">
+        
+    </div>
+    <div class="main__panel">
+        <div class="volume__panel">
+            <label for="volume">Volume</label>
+            <input class="input-range" type="range" name="AudioRange" id="volume" min="0" max="1" step="0.1" value="0.0" onkeydown="return false;">
+            <audio src="./audio/Song.mp3" autoplay="true"></audio>
+        </div>
+        <h2 class="score">0</h1>
+        <h2 class="timer"></h2>
+    </div>
+    <div class="error">
+        <img class="error-img" src="./img/error.png" alt="2 seconds holes to change">
+    </div>
+    <!--<button class="addimpostor">Add impostor</button>-->
+    <div class="maingame">
+        <div class="container">
+            <div class="snake gameobject" style="left: 0; top: 0;"><img class="snake-img" src="./img/impostors/snake.png" alt="" draggable="false"></div>
+        </div>
+    </div>
+    <div class="modal">
+        <p class="modalTextHead"></p>
+        <p class="modalText"></p>
+        <button class="buttonDeadConfirm">Ok</button>
+    </div>
+    <div class="greetings">
+        <h2 class="greetings__text">
+            Greetings <br>
+            Use w a s d / arrows to move, space / enter to start or restart game <br>
+            eat impostors be avare of holes, good luck :3
+        </h2>
+        <button class="greetings__button">Start</button>
+        <div class="greetings__timetrial">
+            <button class="greetings__button-timetrial" value="60">Time trial 60sec</button>
+            <div class="timetrial__choose">
+                <button class="greetings__button-timetrial" value="90">90sec</button>
+                <button class="greetings__button-timetrial" value="120">120sec</button>
+                <button class="greetings__button-timetrial" value="150">150sec</button>
+            </div>
+        </div>
+        <div class="mapSize">
+            <input class="input" type="number" value="7" name="" id="">
+            <!--<button class="buttonChange">Press me</button>-->
+        </div>
+    </div>
+    <div class="changeBg">
+        <p class="changeBg-text">Change Background</p>
+        <div class="changeBg__colection">
+            <div class="colection-item">
+                <img class="colection-img" src="./img/backgrounds/bg1.jpg" alt="">
+            </div>
+            <div class="colection-item">
+                <img class="colection-img" src="./img/backgrounds/bg2.jpg" alt="">
+            </div>
+            <div class="colection-item">
+                <img class="colection-img" src="./img/backgrounds/bg3.jpg" alt="">
+            </div>
+            <div class="colection-item">
+                <img class="colection-img" src="./img/backgrounds/bg4.jpg" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="changeSkins">
+        <p class="changeSkins-text">Change skins</p>
+        <div class="changeSkins__colection">
+            <p class="changeSkins-head">Main creature skins</p>
+            <div class="skins-flex">
+                <div class="skins-item">
+                    <img class="skins-img__main skins-img" src="./img/impostors/snake.png" alt="snake" value = "impostors">
+                </div>
+                <div class="skins-item">
+                    <img class="skins-img__main skins-img" src="./img/pacman/pacman.gif" alt="pacman" value = "ghost">
+                </div>
+                <div class="skins-item">
+                    <img class="skins-img__main skins-img" src="./img/nyancat/nyancat.gif" alt="nyancat" value = "catpaws">
+                </div>
+                <div class="skins-item">
+                    <img class="skins-img__main skins-img" src="./img/candyman/candyman.gif" alt="" value = "candies">
+                </div>
+                <div class="skins-item">
+                    <img class="skins-img__main skins-img" src="./img/mario/mario.gif" alt="mario" value = "mario">
+                </div>
+                <div class="skins-item">
+                    <img class="skins-img__main skins-img" src="./img/hotline/jacket.png" alt="jacket" value = "hotline">
+                </div>
+            </div>
+            <!-- <p class="changeSkins-head">Impostors skins</p>
+            <div class="skins-flex">
+                <div class="skins-item">
+                    <img class="skins-img__allgif skins-img" src="./img/impostorAll.gif" alt="">
+                </div>
+                <div class="skins-item">
+                    <img class="skins-img__imp skins-img" src="./img/enemy.webp" alt="">
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/fieldmove.js"></script>
+</body>
+</html>
